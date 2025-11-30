@@ -14,6 +14,7 @@ import { CROWDFUND_TOKEN_ADDRESSES } from "@/src/lib/crowdfundTokens";
 import { VERIFIED_TOKENS } from "@/src/lib/constants";
 import { memo } from "react";
 import SafeImage from "@/src/components/SafeImage";
+import { Skeleton, SkeletonTokenCard, SkeletonGrid } from "./Skeleton";
 
 interface TokenGridProps {
   tokens: Token[];
@@ -1144,7 +1145,7 @@ export function TokenGrid({
 
   return (
     <div className="mt-2 pb-8 md:pb-24">
-      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
+      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-1">
         {displayedTokens.map((token) => (
           <TokenCardComponent
             key={token.contract_address}
@@ -1153,6 +1154,11 @@ export function TokenGrid({
           />
         ))}
       </div>
+      {displayedTokens.length === 0 && isLoadingMore && (
+        <SkeletonGrid count={9} />
+      )}
+      
+      {/* Empty state after search */}
       {displayedTokens.length === 0 &&
         totalItemsCount === 0 &&
         searchQuery.trim() !== "" && (
@@ -1160,23 +1166,25 @@ export function TokenGrid({
             No tokens found matching &quot;{searchQuery.trim()}&quot;
           </div>
         )}
+      
+      {/* Initial loading state */}
       {displayedTokens.length === 0 &&
         totalItemsCount === 0 &&
         searchQuery.trim() === "" &&
         !isLoadingMore &&
         !isFetchingTrending &&
         (sortBy !== "trending" || trendingTokensRef.current.length === 0) && (
-          <div className="text-center py-12 opacity-60">Loading tokens...</div>
+          <SkeletonGrid count={9} />
         )}
-      {(isLoadingMore || isFetchingTrending) &&
-        displayedTokens.length === 0 && (
-          <div className="text-center py-12 opacity-60">Loading tokens...</div>
-        )}
+      
+      {/* Enriching state message */}
       {isEnrichingTrending && displayedTokens.length > 0 && (
         <div className="text-center mt-4 opacity-60 text-sm">
           Loading staking data...
         </div>
       )}
+      
+      {/* Load more button */}
       {hasMoreTokens && (
         <div className="text-center mt-8">
           <button

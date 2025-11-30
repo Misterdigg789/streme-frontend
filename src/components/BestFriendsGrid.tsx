@@ -2,6 +2,7 @@
 
 import { useState, useEffect } from "react";
 import SafeImage from "./SafeImage";
+import { Skeleton } from "./Skeleton";
 import { BestFriend } from "@/src/lib/neynar";
 
 interface BestFriendsGridProps {
@@ -80,11 +81,10 @@ export function BestFriendsGrid({
       <div className="bg-base-100 rounded-2xl border border-base-300/50 p-6">
         <div className="flex items-center justify-between mb-4">
           <h3 className="text-base font-semibold">Your Best Friends</h3>
-          <div className="loading loading-spinner loading-sm"></div>
         </div>
         <div className="grid grid-cols-2 sm:grid-cols-5 gap-3">
           {Array.from({ length: 10 }).map((_, i) => (
-            <div key={i} className="aspect-square bg-base-200 rounded-xl animate-pulse" />
+            <Skeleton key={i} circle width="w-full" height="h-20" className="rounded-xl" />
           ))}
         </div>
       </div>

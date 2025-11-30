@@ -33,13 +33,10 @@ export function ThemeSwitcher({ className = '' }: ThemeSwitcherProps) {
   return (
     <button
       onClick={toggleTheme}
-      className={`btn btn-ghost btn-sm gap-2 ${className}`}
+      className={`btn btn-ghost btn-circle btn-sm ${className}`}
       title={`Switch to ${isDark ? 'light' : 'dark'} mode`}
     >
       {isDark ? '☀️' : '🌙'}
-      <span className="hidden sm:inline">
-        {isDark ? 'Light' : 'Dark'}
-      </span>
     </button>
   );
 }

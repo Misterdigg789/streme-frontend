@@ -11,7 +11,7 @@ import { baseTransport } from "../../lib/wagmiConfig";
 const queryClient = new QueryClient();
 
 const walletConnectProjectId =
-  process.env.NEXT_PUBLIC_WALLETCONNECT_PROJECT_ID || "demo";
+  process.env.NEXT_PUBLIC_WALLETCONNECT_PROJECT_ID || "d2ff9a1ddd2b4b3d04a9aae7681bab44";
 
 if (!process.env.NEXT_PUBLIC_WALLETCONNECT_PROJECT_ID) {
   console.warn(

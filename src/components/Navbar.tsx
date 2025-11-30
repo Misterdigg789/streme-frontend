@@ -7,7 +7,9 @@ import { useRouter } from "next/navigation";
 import { MiniAppTutorialModal } from "./MiniAppTutorialModal";
 import { ThemeSwitcher } from "./ThemeSwitcher";
 import { HowItWorksModal } from "./HowItWorksModal";
+import { SearchBar } from "./SearchBar";
 import { useWallet } from "../hooks/useWallet";
+import { HeaderRewards } from "./HeaderRewards";
 
 export function Navbar() {
   // Use new simplified wallet hook
@@ -20,6 +22,7 @@ export function Navbar() {
   const [isTutorialOpen, setIsTutorialOpen] = useState(false);
   const [isHowItWorksOpen, setIsHowItWorksOpen] = useState(false);
   const [isDark, setIsDark] = useState(false);
+  const [searchValue, setSearchValue] = useState("");
 
   const truncateAddress = (address: string) => {
     if (!address) return "";
@@ -95,15 +98,16 @@ export function Navbar() {
 
   return (
     <>
-      <nav className="fixed top-0 left-0 right-0 z-50 bg-background/80 border-b border-black/[.1] dark:border-white/[.1]  bg-opacity-80 bg-base-100 ">
-        <div className="px-4 sm:px-8 lg:px-20 h-18 flex items-center justify-between">
-          <div className="flex items-center">
-            <Link href="/" className="flex items-center">
+      <nav className="fixed top-0 left-0 right-0 z-50 bg-base-100 border-b border-base-300/20 backdrop-blur-sm">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+          <div className="flex items-center justify-between h-16">
+            {/* Logo */}
+            <Link href="/" className="flex-shrink-0">
               {isDark ? (
                 <Image
                   src="/streme-text-white.svg"
-                  width={120}
-                  height={23}
+                  width={100}
+                  height={20}
                   alt="Streme"
                   onClick={handleLogoClick}
                   className="cursor-pointer"
@@ -112,8 +116,8 @@ export function Navbar() {
               ) : (
                 <Image
                   src="/streme-text-black.svg"
-                  width={160}
-                  height={23}
+                  width={130}
+                  height={20}
                   alt="Streme"
                   onClick={handleLogoClick}
                   className="cursor-pointer"
@@ -121,92 +125,52 @@ export function Navbar() {
                 />
               )}
             </Link>
-          </div>
 
-          <div className="md:hidden flex items-center gap-2">
-            <button
-              onClick={() => setIsTutorialOpen(true)}
-              className="btn btn-ghost btn-sm btn-circle"
-              title="Tutorial"
-            >
-              <svg
-                className="w-5 h-5"
-                fill="none"
-                stroke="currentColor"
-                viewBox="0 0 24 24"
-                xmlns="http://www.w3.org/2000/svg"
+            {/* Desktop Menu */}
+            <div className="hidden md:flex items-center gap-8 flex-1 ml-12">
+              <Link href="/launch" className="btn btn-primary btn-sm">
+                Launch a Token
+              </Link>
+              
+              <div className="flex-1 max-w-md">
+                <SearchBar value={searchValue} onChange={setSearchValue} />
+              </div>
+              <div className="ml-4">
+                <HeaderRewards />
+              </div>
+            </div>
+
+            {/* Right side - Theme, Tutorial, Connect/Account */}
+            <div className="hidden md:flex items-center gap-4">
+              <button
+                onClick={() => setIsTutorialOpen(true)}
+                className="btn btn-ghost btn-circle btn-sm"
+                title="Tutorial"
               >
-                <path
-                  strokeLinecap="round"
-                  strokeLinejoin="round"
-                  strokeWidth="2"
-                  d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"
-                />
-              </svg>
-            </button>
-            <button
-              onClick={() => setIsMenuOpen(!isMenuOpen)}
-              className="btn btn-ghost btn-sm"
-              aria-label="Toggle menu"
-            >
-              <svg
-                xmlns="http://www.w3.org/2000/svg"
-                fill="none"
-                viewBox="0 0 24 24"
-                strokeWidth={1.5}
-                stroke="currentColor"
-                className="w-6 h-6"
-              >
-                <path
-                  strokeLinecap="round"
-                  strokeLinejoin="round"
-                  d={
-                    isMenuOpen
-                      ? "M6 18L18 6M6 6l12 12"
-                      : "M3.75 6.75h16.5M3.75 12h16.5M3.75 17.25h16.5"
-                  }
-                />
-              </svg>
-            </button>
-          </div>
+                <svg
+                  className="w-5 h-5"
+                  fill="none"
+                  stroke="currentColor"
+                  viewBox="0 0 24 24"
+                >
+                  <path
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                    strokeWidth="2"
+                    d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"
+                  />
+                </svg>
+              </button>
 
-          <div className="hidden md:flex items-center gap-6">
-            {/* link to create page */}
-            <Link href="/launch" className="btn btn-primary">
-              Launch a Token
-            </Link>
+              <ThemeSwitcher />
 
-            <button
-              onClick={() => setIsTutorialOpen(true)}
-              className="btn btn-ghost btn-circle"
-              title="Tutorial"
-            >
-              <svg
-                className="w-5 h-5"
-                fill="none"
-                stroke="currentColor"
-                viewBox="0 0 24 24"
-                xmlns="http://www.w3.org/2000/svg"
-              >
-                <path
-                  strokeLinecap="round"
-                  strokeLinejoin="round"
-                  strokeWidth="2"
-                  d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"
-                />
-              </svg>
-            </button>
-
-            <ThemeSwitcher />
-
-            {isConnected ? (
-              <div className="flex items-center gap-3">
+              {isConnected ? (
                 <div className="relative">
                   <button
                     onClick={() =>
                       setIsAddressDropdownOpen(!isAddressDropdownOpen)
                     }
-                    className="btn btn-ghost gap-2"
+                    className="btn btn-ghost btn-sm gap-2"
                     disabled={!address || isLoading}
                   >
                     {address
@@ -214,21 +178,9 @@ export function Navbar() {
                       : isLoading
                       ? "Connecting..."
                       : "No Address"}
-                    <svg
-                      xmlns="http://www.w3.org/2000/svg"
-                      viewBox="0 0 20 20"
-                      fill="currentColor"
-                      className="w-5 h-5"
-                    >
-                      <path
-                        fillRule="evenodd"
-                        d="M5.23 7.21a.75.75 0 011.06.02L10 11.168l3.71-3.938a.75.75 0 111.08 1.04l-4.25 4.5a.75.75 0 01-1.08 0l-4.25-4.5a.75.75 0 01.02-1.06z"
-                        clipRule="evenodd"
-                      />
-                    </svg>
                   </button>
                   {isAddressDropdownOpen && (
-                    <div className="absolute right-0 mt-2 w-48 bg-base-100 rounded-lg shadow-lg border border-base-300">
+                    <div className="absolute right-0 mt-2 w-48 bg-base-100 rounded-lg shadow-lg border border-base-300 z-50">
                       <Link
                         href="/tokens"
                         onClick={() => setIsAddressDropdownOpen(false)}
@@ -236,7 +188,6 @@ export function Navbar() {
                       >
                         My Tokens
                       </Link>
-
                       <Link
                         href="/launched-tokens"
                         onClick={() => setIsAddressDropdownOpen(false)}
@@ -256,79 +207,124 @@ export function Navbar() {
                     </div>
                   )}
                 </div>
-              </div>
-            ) : (
-              <button
-                onClick={connect}
-                className="btn btn-ghost"
-                disabled={isLoading}
-              >
-                {isLoading ? "Connecting..." : "Login"}
-              </button>
-            )}
-          </div>
-        </div>
-
-        <div
-          className={`md:hidden ${
-            isMenuOpen ? "block" : "hidden"
-          } border-t border-black/[.1] dark:border-white/[.1] bg-background/95 backdrop-blur-sm`}
-        >
-          <div className="px-4 py-4 space-y-3">
-            <Link
-              href="/launch"
-              className="btn btn-primary w-full justify-start"
-            >
-              Launch a Token
-            </Link>
-
-            {isConnected && (
-              <Link
-                href="/tokens"
-                className="btn btn-accent w-full justify-start"
-                onClick={() => setIsMenuOpen(false)}
-              >
-                My Tokens
-              </Link>
-            )}
-
-            <div className="flex items-center justify-between w-full px-4 py-2">
-              <ThemeSwitcher className="w-full justify-start" />
+              ) : (
+                <button
+                  onClick={connect}
+                  className="btn btn-ghost btn-sm"
+                  disabled={isLoading}
+                >
+                  {isLoading ? "Connecting..." : "Connect"}
+                </button>
+              )}
             </div>
 
-            {isConnected && (
-              <Link
-                href="/launched-tokens"
-                className="btn btn-ghost w-full justify-start"
-                onClick={() => setIsMenuOpen(false)}
-              >
-                Launched Tokens
-              </Link>
-            )}
-
-            {isConnected ? (
+            {/* Mobile Menu Toggle */}
+            <div className="md:hidden flex items-center gap-2">
               <button
-                onClick={() => {
-                  disconnect();
-                  setIsMenuOpen(false);
-                }}
-                className="btn btn-ghost w-full justify-start"
+                onClick={() => setIsTutorialOpen(true)}
+                className="btn btn-ghost btn-sm btn-circle"
+                title="Tutorial"
               >
-                Logout
+                <svg
+                  className="w-5 h-5"
+                  fill="none"
+                  stroke="currentColor"
+                  viewBox="0 0 24 24"
+                >
+                  <path
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                    strokeWidth="2"
+                    d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"
+                  />
+                </svg>
               </button>
-            ) : (
               <button
-                onClick={() => {
-                  connect();
-                  setIsMenuOpen(false);
-                }}
-                className="btn btn-ghost w-full justify-start"
-                disabled={isLoading}
+                onClick={() => setIsMenuOpen(!isMenuOpen)}
+                className="btn btn-ghost btn-sm"
+                aria-label="Toggle menu"
               >
-                {isLoading ? "Connecting..." : "Login"}
+                <svg
+                  xmlns="http://www.w3.org/2000/svg"
+                  fill="none"
+                  viewBox="0 0 24 24"
+                  strokeWidth={1.5}
+                  stroke="currentColor"
+                  className="w-6 h-6"
+                >
+                  <path
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                    d={
+                      isMenuOpen
+                        ? "M6 18L18 6M6 6l12 12"
+                        : "M3.75 6.75h16.5M3.75 12h16.5M3.75 17.25h16.5"
+                    }
+                  />
+                </svg>
               </button>
-            )}
+            </div>
           </div>
+
+          {/* Mobile Menu */}
+          {isMenuOpen && (
+            <div className="md:hidden border-t border-base-300/20 bg-base-100/95 backdrop-blur-sm">
+              <div className="px-2 py-4 space-y-2">
+                <Link
+                  href="/launch"
+                  className="btn btn-primary w-full justify-start"
+                >
+                  Launch a Token
+                </Link>
+                <div className="px-2 py-2">
+                  <SearchBar value={searchValue} onChange={setSearchValue} />
+                </div>
+                {isConnected && (
+                  <Link
+                    href="/tokens"
+                    className="btn btn-ghost w-full justify-start"
+                    onClick={() => setIsMenuOpen(false)}
+                  >
+                    My Tokens
+                  </Link>
+                )}
+                {isConnected && (
+                  <Link
+                    href="/launched-tokens"
+                    className="btn btn-ghost w-full justify-start"
+                    onClick={() => setIsMenuOpen(false)}
+                  >
+                    Launched Tokens
+                  </Link>
+                )}
+                <div className="px-2 py-2">
+                  <ThemeSwitcher />
+                </div>
+                {isConnected ? (
+                  <button
+                    onClick={() => {
+                      disconnect();
+                      setIsMenuOpen(false);
+                    }}
+                    className="btn btn-ghost w-full justify-start"
+                  >
+                    Logout
+                  </button>
+                ) : (
+                  <button
+                    onClick={() => {
+                      connect();
+                      setIsMenuOpen(false);
+                    }}
+                    className="btn btn-ghost w-full justify-start"
+                    disabled={isLoading}
+                  >
+                    {isLoading ? "Connecting..." : "Connect"}
+                  </button>
+                )}
+              </div>
+            </div>
+          )}
         </div>
       </nav>
 

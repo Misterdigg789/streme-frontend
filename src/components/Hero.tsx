@@ -51,11 +51,11 @@ const HeroComponent = () => {
   }, []);
 
   return (
-    <div className="layout w-full max-w-[1440px] mx-auto h-[300px] mb-[-50px] relative mt-10">
+    <div className="layout w-full max-w-[1440px] mx-auto h-[180px] mb-[-50px] relative mt-10">
       {/* Hero Text */}
       <div className="absolute inset-0 flex flex-col items-center justify-center z-10 text-center">
         {/* Transparent background container */}
-        <div className=" bg-base-100/1 border border-base-300/20 rounded-3xl px-8 py-6 md:px-12 md:py-8">
+        <div className=" bg-base-100/1 border border-base-300/20 rounded-3xl px-8 py-3 md:px-12 md:py-4">
           <h1 className="text-4xl md:text-7xl font-extrabold tracking-tight mb-4">
             <span className="text-primary drop-shadow-sm">Ape.</span>{" "}
             <span className="text-secondary drop-shadow-sm">Stake.</span>{" "}

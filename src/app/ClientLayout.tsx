@@ -732,15 +732,17 @@ function EnvironmentDetector({ children }: { children: React.ReactNode }) {
     detectEnvironment();
   }, []);
 
-  // Show loading during detection
+  // Show skeleton loading during detection
   if (isDetecting || isMiniApp === null) {
     return (
-      <div className="flex items-center justify-center min-h-screen">
-        <img
-          src="/icon-transparent.png"
-          alt="Loading"
-          className="w-16 h-16 animate-pulse"
-        />
+      <div className="flex flex-col items-center justify-center min-h-screen gap-4">
+        <div className="space-y-4 w-full max-w-md px-4">
+          <div className="h-12 bg-base-300 dark:bg-base-600 animate-pulse rounded-lg" />
+          <div className="space-y-2">
+            <div className="h-4 bg-base-300 dark:bg-base-600 animate-pulse rounded w-full" />
+            <div className="h-4 bg-base-300 dark:bg-base-600 animate-pulse rounded w-3/4" />
+          </div>
+        </div>
       </div>
     );
   }
